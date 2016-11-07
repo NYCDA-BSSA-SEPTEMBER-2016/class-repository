@@ -11,7 +11,7 @@ For questions:
 
 >About Class: contact Mentor (@mentor on Slack)  
 >About Administration and the NYCDA: Manouk (@manoukmeilof on Slack)  
->About Grades & homework: <TA NAME> (@TASLACK on Slack)  
+>About Grades & homework: <TA NAME> (@paulvanmotman on Slack)  
 
 ## Important note on Intensity & Prework
 
@@ -193,20 +193,21 @@ We highly recommend:
 
 ### Estimated course overview
 
-This ia **not final** and will be subject to your teacher. It is however a general overview of what to expect.
+This is **not final** and will be subject to your teacher. It is however a general overview of what to expect.
 
 The schedule is 5 days a week times 12 weeks is 60 days long.
 
-| Day     | PBL Topic | Exercise         | Non PBL Topic
+| Day     | PBL Topic | Exercise         | Non PBL Topic/Lecture
 |---------|----------------|----------------|------|
 | 1       | Values, types and Operators | FizzBuzz | Breaking down problems
 | 2       | Functions and objects | Book library | 
 | 3       | Scope & anonymous functions | Math Anonymous functions | Git & Github basics
-| 4       | Prorotypes | Prototype practice | 
+| 4       | Prototypes | Prototype practice | 
 | 5       | jQuery | Project personal website | 
-| 6       | Source control | Project personal website | Git branching
+| 6       | As needed | Project personal website | HTML/CSS Refresher Livecode
 | 7       | As needed | "" | 
-| 8-10    | As needed | Project business website | 
+| 8       | Source control | Project Business website | Git branching
+| 9-10    | As needed | Project business website | 
 | 11      | NodeJS | Play around | npm
 | 12      | Node modules | Coutry information app | 
 | 13-14   | As needed | "" |
@@ -376,7 +377,7 @@ var person = {
     name: 'Tony',
     outfit: 'Iron Suit',
     affiliations: {
-        work: 'Start Industries',
+        work: 'Stark Industries',
         friends: 'Avengers'
     },
     money: undefined
@@ -391,9 +392,9 @@ person.money = 2 * 1000 * 1000 * 1000
 console.log( person.money )
 
 var object = {
-  property1: value1,
-  property2: value2,
-  property3: value3,
+  property1: 'value1',
+  property2: 'value2',
+  property3: 'value3',
 }
 
 for( var objectKey in object ) {
@@ -716,13 +717,29 @@ Source: https://www.troyhunt.com/life-without-source-control-share-your/
 * https://try.github.io ( dynamic tutorial )
 
 **Homework**
-* Personal website project
+
+**Project Business Website**
+ 
+> Work in groups of two or three. Note: each person will receive a separate grade based on their contributions on Github.
+> Choose a business, then build a website for that business. The business can be real or imagined.
+> 
+> **Design requirements:**
+> Prior to coding, spend time sketching out the site's layout. Scan in and submit your sketch as part of your submission. The primary importance of this is for future employers to see your thought process when designing the site.
+> 
+> **Site requirements:**
+> - A minimum of four separate pages
+> - Use photographs
+> - Using JavaScript and jQuery, add at least two interactive elements to the site. Options include, but are not limited to:
+>    - animated drop down navigation bars
+>    - a photo gallery that, on click, displays large versions of the photos
+> 
+> **Git requirements:**
+> - When creating each page, create a separate branch on git. Add your commits to that branch. Then, when the page is complete, issue a pull request. Your other team member(s) must review and then merge that branch into master. Branch names should be named after features. Do not push directly to master, aside from your initial commit.
 
 ## NodeJS
 
-```
-Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
-```
+> Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+
 
 ```shell
 npm init
@@ -786,10 +803,18 @@ fs.readFile('./embarrassing.jpg', 'utf-8', function(err, data){
 ## NodeJS Modules
 
 Filestructure:
-- node-modules
-.gitignore
-app.js
-sayhello.js
+> --node-modules (folder)
+> 
+> .gitignore
+> 
+> app.js
+> 
+> sayhello.js
+
+```shell
+npm init
+npm install express --save
+```
 
 app.js:
 
@@ -797,7 +822,7 @@ app.js:
 var express = require( 'express' )
 var sayhello = require( './sayhello' )
 
-sayhello( process.argv[2] ) // Hello my name is Peter
+sayhello( process.argv[2] ) // Hello, I am Peter
 ```
 
 sayhello.js:
@@ -827,8 +852,9 @@ node app.js Peter
 > - Takes in one parameter from the command line, the name of a country. Note: command line arguments can be read from the global array `process.argv`
 > - Reads and parses the `countries.json` file. Note: you must use readFile and not readFileSync.
 > - Outputs information about that specific country. Must be in the following format:
->     Country: <country name>
->     Top Level Domain: <tld>
+> 
+> Country: Netherlands
+> Top Level Domain: .nl
 > 
 > **Part 2**
 > - For the purposes of this exercise, you must create a separate module for reading and parsing the JSON file, named "json-file-reader".
@@ -861,7 +887,7 @@ node app.js Peter
 > ```
 > 
 > 
-> // pecify http command with -X
+> // Specify http command with -X
 > 
 > ```bash
 > # the following two are the same:
@@ -1042,7 +1068,7 @@ insert into hats (name, material, height, brim) values
   ('chicken', 'bwuk bwuk bwuk', 12, false);
 
 select * from hats;
-select * from hats where name = 'top hat';
+select material from hats where name = 'top hat';
 select count(*) from hats;
 
 delete from hats where name = 'chicken';
@@ -1236,30 +1262,104 @@ sequelize
 ## Cookies & Sessions
 
 ```js
-var express      = require('express')
-var cookieParser = require('cookie-parser')
+var Sequelize = require('sequelize');
+var express = require('express');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 
-var app = express()
-app.use(cookieParser())
+var sequelize = new Sequelize('class_example', 'jon', null, {
+    host: 'localhost',
+    dialect: 'postgres',
+    define: {
+        timestamps: false
+    }
+});
 
-app.get('/', function(req, res) {
-  console.log('Cookies: ', req.cookies)
-})
+var User = sequelize.define('user', {
+    name: Sequelize.STRING,
+    email: Sequelize.STRING,
+    password: Sequelize.STRING
+});
 
-app.listen(8080)
-
-// curl command that sends an HTTP request with two cookies
-// curl http://127.0.0.1:8080 --cookie "Cho=Kim;Greet=Hello"
-
-var app = express()
-var session = require('express-session')
+var app = express();
 
 app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}))
+    secret: 'oh wow very secret much security',
+    resave: true,
+    saveUninitialized: false
+}));
+
+app.set('views', './src/views');
+app.set('view engine', 'jade');
+
+app.get('/', function (request, response) {
+    response.render('index', {
+        message: request.query.message,
+        user: request.session.user
+    });
+});
+
+app.get('/profile', function (request, response) {
+    var user = request.session.user;
+    if (user === undefined) {
+        response.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+    } else {
+        response.render('profile', {
+            user: user
+        });
+    }
+});
+
+app.post('/login', bodyParser.urlencoded({extended: true}), function (request, response) {
+    if(request.body.email.length === 0) {
+        response.redirect('/?message=' + encodeURIComponent("Please fill out your email address."));
+        return;
+    }
+
+    if(request.body.password.length === 0) {
+        response.redirect('/?message=' + encodeURIComponent("Please fill out your password."));
+        return;
+    }
+
+    User.findOne({
+        where: {
+            email: request.body.email
+        }
+    }).then(function (user) {
+        if (user !== null && request.body.password === user.password) {
+            request.session.user = user;
+            response.redirect('/profile');
+        } else {
+            response.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+        }
+    }, function (error) {
+        response.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+    });
+});
+
+app.get('/logout', function (request, response) {
+    request.session.destroy(function(error) {
+        if(error) {
+            throw error;
+        }
+        response.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
+    })
+});
+
+sequelize.sync({force: true}).then(function () {
+    User.create({
+        name: "stabbins",
+        email: "yes@no",
+        password: "not_password"
+    }).then(function () {
+        var server = app.listen(3000, function () {
+            console.log('Example app listening on port: ' + server.address().port);
+        });
+    });
+}, function (error) {
+    console.log('sync failed: ');
+    console.log(error);
+});
 
 ```
 
@@ -1557,4 +1657,3 @@ Notes:
 >     Give an estimate for how long each will take per engineer.
 >     Determine whether things can be built concurrently.
 >     Come up with a timeline of goals to stick to.
-
